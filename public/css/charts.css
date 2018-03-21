@@ -1,0 +1,283 @@
+/*=================================================*/
+
+
+/*============= start my frame work ===============*/
+
+
+/*=================================================*/
+
+* {
+    direction: rtl;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -o-box-sizing: border-box;
+}
+
+.chevron-down {
+    color: red !important;
+}
+
+canvas {
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    max-width: 100%;
+}
+
+
+/*============= end fram work =====================*/
+
+
+/*========= update of bootstrip ==========*/
+
+.progress.active .progress-bar,
+.progress-bar.active,
+.progress-bar-danger {
+    float: right;
+    font-size: 15px;
+}
+
+
+/*======================end==============*/
+
+
+/*start myheader anulse*/
+
+
+/*header content the anlyse wsummerize and two button*/
+
+body,
+html {
+    background-color: #f5f5f5;
+}
+
+.myheader {
+    margin-top: 30px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.myheader .myhead-anlys:not(:last-of-type) {
+    border-right: 2px solid #a4a8a7;
+}
+
+.myheader .myhead-anlys .label-anlys {
+    color: #a2a6a9;
+    margin-bottom: 0px;
+}
+
+.myheader .myhead-anlys .label-anlys span {
+    padding-right: 11px;
+    font-size: 30px;
+}
+
+.myheader .myhead-anlys .his-type {
+    font-size: 39px;
+    color: #516178
+}
+
+.myheader .myhead-anlys .comp-time {
+    margin-top: 0px;
+    color: #a9b0b8;
+    font-size: 20px;
+}
+
+.myheader .myhead-anlys .comp-time bdi {
+    color: #2abf97;
+    font-style: italic;
+}
+
+.myheader .myhead-anlys button {
+    font-size: 24px;
+}
+
+.myheader .myhead-anlys .report1 {
+    margin-bottom: 12px;
+    margin-top: 3px;
+}
+
+
+/*======================================================*/
+
+
+/*===========start main graph section ====================*/
+
+.main-graph .header-main-graph {
+    background: #fff;
+    padding-top: 20px;
+    border-bottom: 2px solid #e8e9eb;
+}
+
+body>div.main-graph>div>div.graph>div>div.col-md-4>h2 {
+    font-size: 29px;
+}
+
+.main-graph .header-main-graph .peroid select {
+    font-size: 20px;
+    height: 37px;
+    direction: ltr;
+}
+
+
+/*satrt reaL GRAP*/
+
+.main-graph .graph {
+    background-color: #fff;
+    padding-top: 10px;
+    padding-right: 10px;
+}
+
+.main-graph .graph h2 {
+    padding-right: 10px;
+    border-bottom: 2px solid #e8e9eb;
+    padding-bottom: 15px;
+}
+
+.main-graph .graph .myprogressinfo {
+    padding-right: 20px;
+    padding-left: 20px;
+}
+
+
+/*============================================================*/
+
+
+/*start assistant grapg section*/
+
+.assistant-graphs {
+    padding-top: 40px;
+}
+
+.assistant-graphs .mygraps {
+    background-color: #f8f8f8;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.assistant-graphs .mygraphs-tor .theinfo {
+    padding: 15px;
+    background-color: #fff;
+    margin-bottom: 20px;
+}
+
+.assistant-graphs .mygraphs-tor .h2 {
+    border-bottom: 2px solid #e8e9eb;
+    padding-bottom: 10px;
+}
+
+.assistant-graphs .mygraphs-tor .h2 .option {
+    position: relative;
+    display: inline-block;
+    width: 61%;
+    font-size: 20px;
+    text-align: left;
+    margin-right: 17%;
+}
+
+.assistant-graphs .mygraphs-tor .myselect5,
+.assistant-graphs .mygraphs-tor .myselect6 {
+    font-size: 19px;
+    text-align: left;
+}
+
+.assistant-graphs .mygraphs-tor .myselect5 i {
+    font-size: 19px;
+}
+
+body div.assistant-graphs>div>div>div>div.col-xs-12.mygraphs-tor>div.theinfo {
+    margin-bottom: 0px;
+}
+
+.mygraphs-tor .endgraphs {
+    background-color: #fff;
+}
+
+#chart-area2 {
+    max-height: 350px;
+    max-width: 90%;
+    margin: auto;
+}
+
+
+/*========================================================*/
+
+
+/*media Quary for sm*/
+
+@media (min-width:769px) and (max-width:991px) {
+    .myheader .myhead-anlys:nth-of-type(1),
+    .myheader .myhead-anlys:nth-of-type(2) {
+        margin-bottom: 50px;
+    }
+    .myheader .myhead-anlys:nth-of-type(2) {
+        border-right: none !important;
+    }
+    .main-graph .header-main-graph {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    .assistant-graphs .mygraphs-tor .h2 .option {
+        width: 61%;
+        margin-right: 42px;
+    }
+    .assistant-graphs .mygraphs-tor .theinfo:not(:first-of-type) {
+        margin-top: 20px;
+    }
+    .assistant-graphs .mygraps .mygraphs-tor:not(:first-of-type) {
+        margin-top: 20px !important;
+    }
+    body>div.main-graph>div>div.graph>div>div.col-md-4>h2 {
+        margin-top: 50px;
+    }
+}
+
+
+/*media Quary for xs*/
+
+@media (max-width:768px) {
+    .myheader .myhead-anlys {
+        border: none !important;
+        border-bottom: 2px solid #a4a8a7 !important;
+        margin-bottom: 16px;
+        padding-bottom: 16px;
+    }
+    .myheader .myhead-anlys:last-of-type {
+        margin-bottom: 0px;
+        border-bottom: none !important;
+    }
+    .main-graph .header-main-graph {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    .assistant-graphs .mygraps .mygraphs-tor:not(:first-of-type) {
+        margin-top: 20px !important;
+    }
+    body>div.main-graph>div>div.graph>div>div.col-md-4>h2 {
+        margin-top: 50px;
+    }
+    .assistant-graphs .mygraphs-tor .myselect5,
+    .assistant-graphs .mygraphs-tor .myselect6 {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+}
+
+
+/*media 5000*/
+
+@media (max-width:511px) {
+    .main-graph .header-main-graph .peroid .myselect {
+        width: 100% !important;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .assistant-graphs .mygraphs-tor .testing,
+    .assistant-graphs .mygraphs-tor .testing {
+        float: none !important;
+    }
+    body>div.assistant-graphs>div>div>div>div.col-xs-12.mygraphs-tor>div.theinfo>div>div>div.col-md-6.col-sm-5.testing>div {
+        font-size: 23px;
+    }
+}
