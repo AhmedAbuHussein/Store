@@ -22,6 +22,7 @@ Route::get('/register','AdminController@register')->name('register');
 Route::post('/register','AdminController@registerUser');
 Route::get('/edit','AdminController@editDatastore')->name('edit');
 Route::post('/edit','AdminController@saveDataChange');
+Route::get('/pdf','PDFController@index');
 
 /*******************************Ajax controller**********************/
 Route::post('/user', 'AjaxController@user');
