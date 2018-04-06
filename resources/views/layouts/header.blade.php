@@ -58,11 +58,14 @@
                         <div class="dropdown">
                             <button class="btn dropdown-toggle notification" type="button" data-toggle="dropdown">
                                       
-                                <span class="notify" id="notify"></span>
-                                <i class="fa fa-bell-o fa-lg"></i>
+                                <span class="notify" id="notify">{{count($notifies)}}</span>
+                                <i id="notification" class="fa fa-bell-o fa-lg"></i>
                             </button>
 
                             <ul class="dropdown-menu" id="notify-list">
+                                @foreach ($notifies as $notify)
+                                <li><a href="/editaction?itemid={{$notify->requerd_num}}">{{$notify->notify}}</a></li>
+                                @endforeach
                             </ul>
 
                         </div>
@@ -83,7 +86,7 @@
                                             </button>
                             <ul class="dropdown-menu">
                                 <li><a href="#">الملف الشخصي</a></li>
-                                <li><a href="#">تعديل</a></li>
+                                <li><a href="/modify?id={{Auth::id()}}">تعديل</a></li>
                                 <li class="divider"></li>
 
                                 <li><a href="{{ route('logout') }}" 

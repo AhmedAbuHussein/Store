@@ -38,7 +38,7 @@
                 <hr>
                 <h3 class="text-center"><bdi>{{Auth::user()->name}}</bdi> <img src="/uploaded/{{Auth::user()->img}}" /></h3>
 
-                <h4 class="text-muted text-uppercase"><bdi>الرئيسـيه</bdi></h4>
+                <h4 class="text-muted text-uppercase"><a href="{{ route('dashboard')}}">الرئيسـيه</a></h4>
 
                 <ul class="aside-ul">
                     <li class="down-menu"><i class="fa fa-chevron-left"></i> <bdi>المستديم</bdi></li>
@@ -71,7 +71,7 @@
                 <div class="aside-footer">
                     <ul class="list-unstyled">
                         <li><a href="#" class="btn" data-toggle="modal" data-target="#clock"><i class="fa fa-clock-o fa-2x"></i></a></li>
-                        <li><a href="#" class="btn"><i class="fa fa-user"></i></a></li>
+                        <li><a href="/profile?id={{Auth::id()}}" class="btn"><i class="fa fa-user"></i></a></li>
                         <li><a href="{{ route('logout') }}" class="btn" 
                             onclick="event.preventDefault();
                             document.getElementById('logout-form').submit();"><i class="fa fa-power-off"></i></a></li>
@@ -88,27 +88,27 @@
         </div>
 
         <div class="modal fade" id="clock" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title text-center" id="myModalLabel">السجل</h4>
-                        </div>
-                        <div class="modal-body">
-    
-                            <div style="max-width:100%;" id="datepicker"></div>
-    
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">اغلاق</button>
-                        </div>
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title text-center" id="myModalLabel">السجل</h4>
+                    </div>
+                    <div class="modal-body">
+
+                        <div style="max-width:100%;" id="datepicker"></div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">اغلاق</button>
                     </div>
                 </div>
             </div>
+        </div>
 
         <div class="col-md-10 main-content">
-            <nav class="navbar navbar-inverse main-nav">
 
+            <nav class="navbar navbar-inverse main-nav">
                     <div class="navbar-header">
                             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#myNavbar" aria-expanded="false">
                                         <span class="sr-only">Toggle navigation</span>
@@ -117,18 +117,15 @@
                                         <span class="icon-bar"></span>
                                     </button>
             
-                            <a class="navbar-brand" href="{{route('dashboard')}}">الرئيسيه</a>
+                            <a class="navbar-brand hidden-md hidden-lg" href="{{route('dashboard')}}">الرئيسيه</a>
                         </div>
             
                         <div class="collapse navbar-collapse" id="myNavbar">
-                            <ul class="nav navbar-nav">
-            
-            
+                            <ul class="nav navbar-nav hidden-md hidden-lg">
                                 <li><a href="/store">المخازن</a></li>
                                 <li><a href="/chart">الاحصائيات</a></li>
                                 <li><a href="/covenant">العهد</a></li>
                                 <li><a href="/user">المستخدمين</a></li>
-            
                             </ul>
                             <ul class="nav navbar-nav pull-right main-nav-menu">
                                 <li class="notify-parent">
@@ -138,8 +135,12 @@
                                                     <i class="fa fa-bell-o fa-lg"></i>
                                                 </button>
             
-                                        <ul class="dropdown-menu" id="notify-list"></ul>
-            
+                                        <ul class="dropdown-menu" id="notify-list">
+                                                @foreach ($notifies as $notify)
+                                                <li><a href="/editaction?itemid={{$notify->requerd_num}}">{{$notify->notify}}</a></li>
+                                                @endforeach
+                                        </ul>
+                                                
                                     </div>
                                 </li>
                                 @guest
@@ -156,8 +157,8 @@
                                                         
                                                         </button>
                                         <ul class="dropdown-menu">
-                                            <li><a href="#">الملف الشخصي</a></li>
-                                            <li><a href="#">تعديل</a></li>
+                                            <li><a href="/profile?id={{Auth::id()}}">الملف الشخصي</a></li>
+                                            <li><a href="/modify?id={{Auth::id()}}">تعديل</a></li>
                                             <li class="divider"></li>
             
                                             <li><a href="{{ route('logout') }}" 

@@ -70,7 +70,7 @@ class AjaxController extends Controller
 
     public function notifyheader(Request $req){
         
-        $notify = Notify::where('readed','=', 0 ,'AND','store_id','=',Auth::user()->store_id)->get();
+        $notify = Notify::where('readed','=', 0 )->where('store_id','=',Auth::user()->store_id)->get();
         $count = count($notify);
         if($count != $req->count){
             return Array('notify'=>$notify,'count'=>$count);

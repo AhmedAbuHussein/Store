@@ -17,11 +17,13 @@ use App\Covenant;
 
 class AdminController extends Controller
 {
+    
     public function __construct()
     {
    
         $this->middleware('auth');
     }
+    
 
     public function dashboard(){
 
@@ -42,6 +44,7 @@ class AdminController extends Controller
         $userNum = count(User::all());
         $storeNum = count(Store::all())-1;
         
+        $notifies = Notify::where('readed','=', 0 )->where('store_id','=',Auth::user()->store_id)->get();
 
         if(Auth::user()->jop_id > 2 ){
             return redirect('/');
@@ -54,26 +57,32 @@ class AdminController extends Controller
             'count'=>$count,
             'userNum'=>$userNum,
             'storeNum'=> $storeNum,
+            'notifies'=>$notifies,
         ) ;
         return view('admin.dashboard',$arr);
 
     }
 
     public function chart(){
+        $notifies = Notify::where('readed','=', 0 )->where('store_id','=',Auth::user()->store_id)->get();
         if(Auth::user()->jop_id > 2 ){
             return redirect('/');
         }
         $arr = Array(
             'title' =>'الاحصائيات',
+            'notifies'=> $notifies,
         ) ;
         return view('admin.chart',$arr);
     }
 
     public function store(Request $req){
 
+        $notifies = Notify::where('readed','=', 0 )->where('store_id','=',Auth::user()->store_id)->get();
+        $store_id = Auth::user()->jop_id != 0 ? Auth::user()->store_id:'';
         $data = Datastore::join('stores','datastores.store_id','=','stores.id')
                             ->join('adds','datastores.id','=','adds.datastore_id')
                             ->select('datastores.*','stores.name AS store_name','adds.source','adds.permision')
+                            ->where('store_id','LIKE','%' . $store_id . '%')
                             ->get();
         $stores = Store::where('id','>','1')->get();
 
@@ -84,13 +93,14 @@ class AdminController extends Controller
             'title' =>'المخازن',
             'stores'=>$stores,
             'data'=>$data,
+            'notifies'=>$notifies,
         ) ;
         return view('admin.store',$arr);
     }
 
     public function users(){
 
-
+        $notifies = Notify::where('readed','=', 0 )->where('store_id','=',Auth::user()->store_id)->get();
 
         $users = User::join('stores','users.store_id','=','stores.id')
                         ->select('users.*','stores.name AS store_name')
@@ -107,12 +117,14 @@ class AdminController extends Controller
             'title' =>'الموظفين',
             'empty'=>$empty,
             'users'=>$users,
+            'notifies'=>$notifies,
         ) ;
         return view('admin.users',$arr);
     }
 
 
     public function covenant(Request $req){
+        $notifies = Notify::where('readed','=', 0 )->where('store_id','=',Auth::user()->store_id)->get();
         $items = Employee::all();
         $empty = "";
         if(count($items)==0){
@@ -122,17 +134,19 @@ class AdminController extends Controller
             'title'=>'عهٌد',
             'empty' =>$empty,
             'items'=>$items,
+            'notifies'=> $notifies,
         );
         return view('admin.employee',$arr);
     }
     
     public function register(){
-
+        $notifies = Notify::where('readed','=', 0 )->where('store_id','=',Auth::user()->store_id)->get();
         $stores = Store::where('id','!=','1')->get();
 
         $arr = Array(
             'title'=>'تسجيل',
             'stores'=> $stores,
+            'notifies'=>$notifies,
         );
         return view('admin.registration',$arr);
     }
@@ -183,6 +197,7 @@ class AdminController extends Controller
 
     public function editDatastore(Request $req){
 
+        $notifies = Notify::where('readed','=', 0 )->where('store_id','=',Auth::user()->store_id)->get();
         $id = $req->get('id');
         $stores = Store::where('id','!=',1)->get();
 
@@ -196,7 +211,8 @@ class AdminController extends Controller
             $arr = Array(
                 'title'=>'Edit',
                 'item'=>$item,
-                'stores'=>$stores
+                'stores'=>$stores,
+                'notifies'=> $notifies,
             );
             return view('admin.editstore',$arr);
         }
@@ -222,28 +238,51 @@ class AdminController extends Controller
         // message for owner of store
         if($user->jop_id == 2){
 
-            $history = new History();
-            $history->name = $req->name;
-            $history->quantity = $req->quantity;
-            $history->price = $req->price;
-            $history->source = $req->source;
-            $history->permision = $req->permision;
-            $history->store_id = $req->store;
-            $history->row_num = $req->itemid;
-            $history->total = ($req->price * $req->quantity);
+            $hist = History::where('permision','=',$req->permision)->get();
+            // check if item already exist in the history table
+            if(count($hist) > 0){
 
-            $history->save();
-       
-            $msg = "تم التعديل علي مخزن " . $store->name . " من قبل " . $user->name . "  لحفظ التعديل يرجي الموافقه  "; 
-            $notify = new Notify();
-            $notify->notify = $msg;
-            $notify->user_id = $req->user;
-            $notify->requerd_num = $req->itemid;
-            $notify->store_id =  $req->store;
-            $notify->person = 2;
+                $hist = $hist[0];
+                $hist->name = $req->name;
+                $hist->quantity = $req->quantity;
+                $hist->price = $req->price;
+                $hist->source = $req->source;
+                $hist->permision = $req->permision;
+                $hist->store_id = $req->store;
+                $hist->row_num = $req->itemid;
+                $hist->total = ($req->price * $req->quantity);
+                $hist->save();
 
-            $notify->save();
+            }else{
 
+                $history = new History();
+                $history->name = $req->name;
+                $history->quantity = $req->quantity;
+                $history->price = $req->price;
+                $history->source = $req->source;
+                $history->permision = $req->permision;
+                $history->store_id = $req->store;
+                $history->row_num = $req->itemid;
+                $history->total = ($req->price * $req->quantity);
+                $history->save();
+
+                    
+                $history_id = History::where('permision','=',$req->permision)->get();     
+
+                $msg = "تم التعديل علي مخزن " . $store->name . " من قبل " . $user->name . "  لحفظ التعديل يرجي الموافقه  "; 
+                $notify = new Notify();
+                $notify->notify = $msg;
+                $notify->user_id = $req->user;
+                $notify->requerd_num = $req->itemid;
+                $notify->store_id =  $req->store;
+                $notify->history_id = $history_id[0]->id;
+
+                $notify->save();
+
+
+            }
+
+           
         }else{           
 
             $add = Add::where('permision','=',$req->permision,'AND','datastore_id','=',$req->itemid)->limit(1)->get();
@@ -270,6 +309,111 @@ class AdminController extends Controller
         }
         return redirect('/store');
 
+    }
+
+
+    public function magagenotify(Request $req){
+        $notifies = Notify::where('readed','=', 0 )->where('store_id','=',Auth::user()->store_id)->get();
+        $itemid = intval($req->get('itemid'));
+
+        $history = History::where('row_num','=',$itemid)->get();
+        if(count($history) == 0){
+            return redirect('/store');
+        }
+        $data = Datastore::join('stores','datastores.store_id','=','stores.id')
+                        ->join('adds','datastores.id','=','adds.datastore_id')
+                        ->select('datastores.*','stores.name AS store_name','adds.source','adds.permision','adds.quantity AS quant')
+                        ->where('datastores.id','=',$itemid)
+                        ->get();
+       
+        $arr = Array(
+            'title'=> 'اشعارات',
+            'original'=>$data[0],
+            'history'=>$history[0],
+            'notifies'=> $notifies,
+            
+        );
+        return view('admin.manageNotify',$arr);
+    }
+
+    public function editaction(Request $req){
+        if($req->input('action') == 'save'){
+
+            $history = History::find($req->input('history_id'));
+            $datastore = Datastore::find($history->row_num);
+            $adds = Add::where('permision','=',$history->permision)->get();
+            $adds = $adds[0];
+            $oldquantity = $adds->quantity;
+
+
+            $datastore->name = $history->name;
+            $datastore->price = $history->price;
+            $datastore->quantity = ((floatval($datastore->quantity) - floatval($oldquantity))+ floatval($history->quantity));
+            $datastore->save();
+            $datastore = Datastore::find($history->row_num);
+            $datastore->total = (floatval($datastore->price) * floatval($datastore->quantity));
+            $datastore->save(); 
+
+            $adds->source = $history->source;
+            $adds->quantity = $history->quantity;
+            $adds->save();
+        
+
+        }
+
+
+            $notify = Notify::where('history_id','=',$req->input('history_id'));
+            $notify->delete();
+            $history = History::find($req->input('history_id'));
+            $history->delete();
+            return redirect('/store');
+        
+    }
+
+    public function modifyuser(Request $req){
+		
+		$id = $req->get('id');
+		$chk = User::find($id);
+		if(count($chk) == 0){
+			return redirect('/dashboard');
+		}
+        if(Auth::user()->id == $id || Auth::user()->jop_id == 0){
+
+			$notifies = Notify::where('readed','=', 0 )->where('store_id','=',Auth::user()->store_id)->get();
+			
+			$user = User::find($id);
+			$stores = Store::where('id','!=',0)->get();
+
+			$arr = Array(
+				'title'=> 'تعديل',
+				'notifies' => $notifies,
+				'user' => $user,
+				'stores'=>$stores,
+			);
+
+			return view('admin.edituser',$arr);
+		}else{
+			 return redirect('/dashboard');
+        }
+    }
+
+    public function profile(Request $req)
+    {
+        $notifies = Notify::where('readed','=', 0 )->where('store_id','=',Auth::user()->store_id)->get();
+        $id = intval($req->get('id'));
+        $user = User::join('stores','stores.id','=','users.store_id')
+                    ->select('users.*','stores.name AS store_name')
+                    ->where('users.id','=',$id)
+                     ->get();
+        if(count($user) == 0){
+            return redirect('/dashboard');
+        }
+        $arr = Array(
+            'title'=>'مستخدم',
+            'user'=> $user[0],
+            'notifies'=>$notifies,
+        );
+        return view('admin.profile',$arr);
     }
 
 }

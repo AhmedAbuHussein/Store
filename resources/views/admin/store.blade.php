@@ -11,10 +11,10 @@
                         <input class="form-control input-primary" id="searchinput" type="search" name="search" placeholder="بحث باسم الصنف" />
                     </div>
                     <div class="col-sm-4 col-sm-offset-4">
-                        <select class="form-control input-primary" id="storechoose" name="store">
+                        <select {{Auth::user()->jop_id != 0 ?'disabled':''}} class="form-control input-primary" id="storechoose" name="store">
                             <option value="1">الكل</option>
                             @foreach($stores as $store)
-                            <option value="{{$store->id}}">{{$store->name}}</option>
+                            <option value="{{$store->id}}" {{Auth::user()->store_id == $store->id?'selected':''}}>{{$store->name}}</option>
                             @endforeach
                         </select>
                     </div>

@@ -23,6 +23,10 @@ Route::post('/register','AdminController@registerUser');
 Route::get('/edit','AdminController@editDatastore')->name('edit');
 Route::post('/edit','AdminController@saveDataChange');
 Route::get('/pdf','PDFController@index');
+Route::get('/manage','AdminController@magagenotify');
+Route::post('/editaction','AdminController@editaction');
+Route::get('/modify','AdminController@modifyuser');
+Route::get('/profile','AdminController@profile');
 
 /*******************************Ajax controller**********************/
 Route::post('/user', 'AjaxController@user');

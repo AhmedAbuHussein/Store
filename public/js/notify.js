@@ -1,9 +1,9 @@
 $(function() {
-
+    var list = $('#notify-list');
+    var notification = $('#notification');
     //notify-list
     count = 0;
     setInterval(function() {
-
         $.ajax({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -14,13 +14,15 @@ $(function() {
             data: { 'count': count },
             success: function(response) {
                 $('#notify').text(response.count).show();
-                $('#notify-list').html("");
+                list.html("");
                 for (i = 0; i < response.count; i++) {
-                    $('#notify-list').append('<li><a href="/store?store=' + response.notify[i].store_id + '&itemid=' + response.notify[i].requerd_num + '">' + response.notify[i].notify + '</a></li>');
+                    list.append('<li><a href="/manage?itemid=' + response.notify[i].requerd_num + '">' + response.notify[i].notify + '</a></li>');
                 }
                 count = response.count;
             }
         });
     }, 5000);
+
+
 
 });

@@ -51,7 +51,7 @@
                                         @if($user->jop_id != 0)
                                             <a href="/delete?action=user&id={{$user->id}}" data-class="{{$user->name}}" class="btn btn-danger btn-sm confirm">حذف <i class="fa fa-close"></i></a>
                                         @endif
-                                        <a href="/edit?action=user&id={{$user->id}}" class="btn btn-success btn-sm">تعديل <i class="fa fa-edit"></i></a>
+                                        <a href="/modify?id={{$user->id}}" class="btn btn-success btn-sm">تعديل <i class="fa fa-edit"></i></a>
                                     @else
                                     <p class="disabled">Disabled</p>
                                     @endif

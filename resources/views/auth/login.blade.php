@@ -16,7 +16,7 @@
 							<label for="username" class="col-sm-4 col-form-label text-md-left">اسم المستخدم</label>
 
 							<div class="col-md-6">
-								<input id="username" type="text" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="username" value="{{ old('username') }}" placeholder="اسم المستخدم" required autofocus > @if ($errors->has('username'))
+								<input id="username" type="text" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" value="{{ old('username') }}" placeholder="اسم المستخدم" required autofocus > @if ($errors->has('username'))
 								<span class="invalid-feedback">
                                         <strong>{{ $errors->first('username') }}</strong>
                                     </span> @endif
